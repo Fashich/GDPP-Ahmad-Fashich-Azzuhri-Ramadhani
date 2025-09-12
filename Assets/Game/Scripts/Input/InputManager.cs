@@ -4,11 +4,30 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-
-void Start(){
-
-}
 void Update(){
+    CheckJumpInput();
+    CheckSprintInput();
+    CheckCrouchInput();
+    CheckChangePOVInput();
+    CheckClimbInput();
+    CheckGlideInput();
+    CheckCancelInput();
+    CheckPunchInput();
+    CheckMainMenuInput();
 }
-
+private void CheckJumpInput(){
+    bool isPressJumpInput = Input.GetKeyDown(KeyCode.Space);
+    if (isPressJumpInput) {
+        Debug.Log("Jump");
+    }
+}
+private void CheckSprintInput(){
+    bool isHoldSprintInput = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+    if (isHoldSprintInput){
+        Debug.Log("Sprinting");
+    }
+    else {
+        Debug.Log("Not Sprinting");
+    }
+}
 }
