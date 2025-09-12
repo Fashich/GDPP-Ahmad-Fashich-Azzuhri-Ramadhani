@@ -7,13 +7,13 @@ public class InputManager : MonoBehaviour
 void Update(){
     CheckJumpInput();
     CheckSprintInput();
-    CheckCrouchInput();
-    CheckChangePOVInput();
-    CheckClimbInput();
-    CheckGlideInput();
-    CheckCancelInput();
-    CheckPunchInput();
-    CheckMainMenuInput();
+    // CheckCrouchInput();
+    // CheckChangePOVInput();
+    // CheckClimbInput();
+    // CheckGlideInput();
+    // CheckCancelInput();
+    // CheckPunchInput();
+    // CheckMainMenuInput();
 }
 private void CheckJumpInput(){
     bool isPressJumpInput = Input.GetKeyDown(KeyCode.Space);
