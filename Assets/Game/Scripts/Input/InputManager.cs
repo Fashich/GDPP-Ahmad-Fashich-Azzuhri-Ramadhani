@@ -13,7 +13,7 @@ void Update(){
     CheckGlideInput();
     CheckCancelInput();
     CheckPunchInput();
-    // CheckMainMenuInput();
+    CheckMainMenuInput();
 }
 private void CheckJumpInput(){
     bool isPressJumpInput = Input.GetKeyDown(KeyCode.Space);
@@ -69,6 +69,12 @@ private void CheckChangePOVInput() {
             bool isPressPunchInput = Input.GetKeyDown(KeyCode.Moused);
             if (isPressPunchInput){
                 Debug.Log("Punch");
+            }
+        }
+        private void CheckMainMenuInput(){
+            bool isPressMainMenuInput = Input.GetKeyDown(KeyCode.Escape);
+            if (isPressMainMenuInput){
+                Debug.Log("Back To Main Menu");
             }
         }
 }
