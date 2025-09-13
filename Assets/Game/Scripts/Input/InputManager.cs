@@ -12,7 +12,7 @@ void Update(){
     CheckClimbInput();
     CheckGlideInput();
     CheckCancelInput();
-    // CheckPunchInput();
+    CheckPunchInput();
     // CheckMainMenuInput();
 }
 private void CheckJumpInput(){
@@ -64,5 +64,11 @@ private void CheckChangePOVInput() {
         if (isPressCancelInput){
             Debug.Log("Cancel Climb or Glide");
         }
+        }
+        private void CheckPunchInput(){
+            bool isPressPunchInput = Input.GetKeyDown(KeyCode.Moused);
+            if (isPressPunchInput){
+                Debug.Log("Punch");
+            }
         }
 }
