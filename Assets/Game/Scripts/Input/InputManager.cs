@@ -45,7 +45,7 @@ private void CheckChangePOVInput() {
         Debug.Log("Change POV: First Person Camera");
     }
     else {
-        Debug.Log("Change POV: Third Person Camera")
+        Debug.Log("Change POV: Third Person Camera");
     }}
     private void CheckClimbInput(){
         bool isPressClimbInput = Input.GetKeyDown(KeyCode.E);
