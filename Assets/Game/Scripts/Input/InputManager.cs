@@ -66,7 +66,7 @@ private void CheckChangePOVInput() {
         }
         }
         private void CheckPunchInput(){
-            bool isPressPunchInput = Input.GetKeyDown(KeyCode.Moused);
+            bool isPressPunchInput = Input.GetKeyDown(KeyCode.Mouse0);
             if (isPressPunchInput){
                 Debug.Log("Punch");
             }
