@@ -9,7 +9,7 @@ void Update(){
     CheckSprintInput();
     CheckCrouchInput();
     CheckChangePOVInput();
-    // CheckClimbInput();
+    CheckClimbInput();
     // CheckGlideInput();
     // CheckCancelInput();
     // CheckPunchInput();
@@ -47,4 +47,10 @@ private void CheckChangePOVInput() {
     else {
         Debug.Log("Change POV: Third Person Camera")
     }}
+    private void CheckClimbInput(){
+        bool isPressClimbInput = Input.GetKeyDown(KeyCode.E);
+        if (isPressClimbInput){
+            Debug.Log("Climb");
+        }
+    }
 }
