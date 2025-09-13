@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour
 void Update(){
     CheckJumpInput();
     CheckSprintInput();
-    // CheckCrouchInput();
+    CheckCrouchInput();
     // CheckChangePOVInput();
     // CheckClimbInput();
     // CheckGlideInput();
@@ -28,6 +28,15 @@ private void CheckSprintInput(){
     }
     else {
         Debug.Log("Not Sprinting");
+    }
+}
+private void CheckCrouchInput(){
+    bool isPressCrouchInput = Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl);
+    if (isPressCrouchInput) {
+        Debug.Log("Crouch");
+    }
+    else {
+        Debug.Log("Standing")
     }
 }
 }
