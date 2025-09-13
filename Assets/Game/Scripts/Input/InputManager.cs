@@ -10,7 +10,7 @@ void Update(){
     CheckCrouchInput();
     CheckChangePOVInput();
     CheckClimbInput();
-    // CheckGlideInput();
+    CheckGlideInput();
     // CheckCancelInput();
     // CheckPunchInput();
     // CheckMainMenuInput();
