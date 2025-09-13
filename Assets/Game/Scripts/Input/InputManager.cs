@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,13 @@ void Update(){
     CheckCancelInput();
     CheckPunchInput();
     CheckMainMenuInput();
+    CheckMovementInput();
+}
+private void CheckMovementInput(){
+    float verticalAxis = Input.GetAxis("Vertical");
+    float horizontalAxis = Input.GetAxis("Horizontal");
+    Debug.Log("Vertical Axis: " + verticalAxis);
+    Debug.Log("Horizontal Axis: " + horizontalAxis);
 }
 private void CheckJumpInput(){
     bool isPressJumpInput = Input.GetKeyDown(KeyCode.Space);
