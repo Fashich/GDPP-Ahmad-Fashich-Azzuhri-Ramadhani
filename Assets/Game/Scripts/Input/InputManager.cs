@@ -11,7 +11,7 @@ void Update(){
     CheckChangePOVInput();
     CheckClimbInput();
     CheckGlideInput();
-    // CheckCancelInput();
+    CheckCancelInput();
     // CheckPunchInput();
     // CheckMainMenuInput();
 }
@@ -59,4 +59,10 @@ private void CheckChangePOVInput() {
             Debug.Log("Glide");
         }
     }
+    private void CheckCancelInput(){
+        bool isPressCancelInput = Input.GetKeyDown(KeyCode.C);
+        if (isPressCancelInput){
+            Debug.Log("Cancel Climb or Glide");
+        }
+        }
 }
