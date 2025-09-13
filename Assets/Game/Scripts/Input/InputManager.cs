@@ -53,4 +53,10 @@ private void CheckChangePOVInput() {
             Debug.Log("Climb");
         }
     }
+    private void CheckGlideInput(){
+        bool isPressGlideInput = Input.GetKeyDown(KeyCode.G);
+        if (isPressGlideInput){
+            Debug.Log("Glide");
+        }
+    }
 }
