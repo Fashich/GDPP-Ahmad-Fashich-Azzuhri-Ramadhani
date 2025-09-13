@@ -8,7 +8,7 @@ void Update(){
     CheckJumpInput();
     CheckSprintInput();
     CheckCrouchInput();
-    // CheckChangePOVInput();
+    CheckChangePOVInput();
     // CheckClimbInput();
     // CheckGlideInput();
     // CheckCancelInput();
