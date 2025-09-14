@@ -5,84 +5,102 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-void Update(){
-    CheckJumpInput();
-    CheckSprintInput();
-    CheckCrouchInput();
-    CheckChangePOVInput();
-    CheckClimbInput();
-    CheckGlideInput();
-    CheckCancelInput();
-    CheckPunchInput();
-    CheckMainMenuInput();
-    CheckMovementInput();
-}
-private void CheckMovementInput(){
-    float verticalAxis = Input.GetAxis("Vertical");
-    float horizontalAxis = Input.GetAxis("Horizontal");
-    Debug.Log("Vertical Axis: " + verticalAxis);
-    Debug.Log("Horizontal Axis: " + horizontalAxis);
-}
-private void CheckJumpInput(){
-    bool isPressJumpInput = Input.GetKeyDown(KeyCode.Space);
-    if (isPressJumpInput) {
-        Debug.Log("Jump");
+    public Action<Vector2> OnMoveInput;
+    // Tambahkan properti untuk menyimpan state movement
+    public Vector2 CurrentMovementInput { get; private set; } // 👈 BARIS BARU
+
+    public Action OnJump;
+    public Action<bool> OnSprint;
+    public Action OnCrouch;
+    public Action OnChangePOV;
+    public Action OnCancel;
+    public Action OnClimb;
+    public Action OnGlide;
+    public Action OnPunch;
+    public Action OnMainMenu;
+
+    private bool _wasSprinting = false;
+    private bool _wasCrouching = false;
+
+    private void Update(){
+        CheckJumpInput();
+        CheckSprintInput();
+        CheckCrouchInput();
+        CheckChangePOVInput();
+        CheckClimbInput();
+        CheckGlideInput();
+        CheckCancelInput();
+        CheckPunchInput();
+        CheckMainMenuInput();
+        CheckMovementInput();
     }
-}
-private void CheckSprintInput(){
-    bool isHoldSprintInput = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-    if (isHoldSprintInput){
-        Debug.Log("Sprinting");
+
+    private void CheckMovementInput(){
+        float verticalAxis = Input.GetAxis("Vertical");
+        float horizontalAxis = Input.GetAxis("Horizontal");
+        Vector2 inputAxis = new Vector2(horizontalAxis, verticalAxis);
+
+        // Simpan state movement terbaru
+        CurrentMovementInput = inputAxis; // 👈 BARIS BARU
+
+        if (OnMoveInput != null){
+            OnMoveInput(inputAxis);
+        }
     }
-    else {
-        Debug.Log("Not Sprinting");
+    private void CheckJumpInput(){
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            OnJump?.Invoke(); // Trigger event
+        }
     }
-}
-private void CheckCrouchInput(){
-    bool isPressCrouchInput = Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl);
-    if (isPressCrouchInput) {
-        Debug.Log("Crouch");
+
+    private void CheckSprintInput(){
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        if (isSprinting != _wasSprinting) {
+            OnSprint?.Invoke(isSprinting); // Trigger event
+            _wasSprinting = isSprinting;
+        }
     }
-    else {
-        Debug.Log("Standing");
+
+    private void CheckCrouchInput(){
+        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) {
+            OnCrouch?.Invoke(); // Trigger event
+            _wasCrouching = !_wasCrouching;
+        }
     }
-}
-private void CheckChangePOVInput() {
-    bool isPressChangePOVInput = Input.GetKeyDown(KeyCode.Q);
-    if (isPressChangePOVInput){
-        Debug.Log("Change POV: First Person Camera");
+
+    private void CheckChangePOVInput() {
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            OnChangePOV?.Invoke(); // Trigger event
+        }
     }
-    else {
-        Debug.Log("Change POV: Third Person Camera");
-    }}
+
     private void CheckClimbInput(){
-        bool isPressClimbInput = Input.GetKeyDown(KeyCode.E);
-        if (isPressClimbInput){
-            Debug.Log("Climb");
+        if (Input.GetKeyDown(KeyCode.E)) {
+            OnClimb?.Invoke(); // Trigger event
         }
     }
+
     private void CheckGlideInput(){
-        bool isPressGlideInput = Input.GetKeyDown(KeyCode.G);
-        if (isPressGlideInput){
-            Debug.Log("Glide");
+        if (Input.GetKeyDown(KeyCode.G)) {
+            OnGlide?.Invoke(); // Trigger event
         }
     }
+
     private void CheckCancelInput(){
-        bool isPressCancelInput = Input.GetKeyDown(KeyCode.C);
-        if (isPressCancelInput){
-            Debug.Log("Cancel Climb or Glide");
+        if (Input.GetKeyDown(KeyCode.C)) {
+            OnCancel?.Invoke(); // Trigger event
         }
+    }
+
+    private void CheckPunchInput(){
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            OnPunch?.Invoke(); // Trigger event
         }
-        private void CheckPunchInput(){
-            bool isPressPunchInput = Input.GetKeyDown(KeyCode.Mouse0);
-            if (isPressPunchInput){
-                Debug.Log("Punch");
-            }
+    }
+
+    private void CheckMainMenuInput(){
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            OnMainMenu?.Invoke(); // Trigger event
         }
-        private void CheckMainMenuInput(){
-            bool isPressMainMenuInput = Input.GetKeyDown(KeyCode.Escape);
-            if (isPressMainMenuInput){
-                Debug.Log("Back To Main Menu");
-            }
-        }
+    }
 }
