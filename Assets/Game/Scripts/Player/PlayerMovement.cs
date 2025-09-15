@@ -96,30 +96,33 @@ public class PlayerMovement : MonoBehaviour
     private bool _isFirstPerson;
 
     private void Awake()
+{
+    _rigidbody = GetComponent<Rigidbody>();
+    _boxCollider = GetComponent<BoxCollider>();
+
+    // 🔥🔥🔥 PERBAIKAN KRITIS: Pastikan Rigidbody TIDAK kinematic
+    _rigidbody.isKinematic = false; // BARIS INI YANG MENYELESAIKAN MASALAH
+
+    // 🔧 PERBAIKAN 1: Force-initialize BoxCollider.size.y = _standHeight
+    Vector3 initialSize = _boxCollider.size;
+    initialSize.y = _standHeight;
+    _boxCollider.size = initialSize;
+
+    initialPosition = transform.position;
+
+    // Setup camera
+    GameObject mainCamera = GameObject.FindWithTag("MainCamera");
+    if (mainCamera != null)
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        _boxCollider = GetComponent<BoxCollider>();
-
-        // 🔧 PERBAIKAN 1: Force-initialize BoxCollider.size.y = _standHeight
-        Vector3 initialSize = _boxCollider.size;
-        initialSize.y = _standHeight;
-        _boxCollider.size = initialSize;
-
-        initialPosition = transform.position;
-
-        // Setup camera
-        GameObject mainCamera = GameObject.FindWithTag("MainCamera");
-        if (mainCamera != null)
-        {
-            _cameraTransform = mainCamera.transform;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else
-        {
-            Debug.LogError("MainCamera not found! Please tag your camera with 'MainCamera'");
-        }
+        _cameraTransform = mainCamera.transform;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
+    else
+    {
+        Debug.LogError("MainCamera not found! Please tag your camera with 'MainCamera'");
+    }
+}
 
     private void Start()
     {
@@ -135,6 +138,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError("InputManager reference not set in PlayerMovement!");
         }
+        Physics.gravity = new Vector3(0, -9.81f, 0);
+    Debug.Log("Gravity: " + Physics.gravity);
     }
 
     private void OnDestroy()
@@ -159,24 +164,36 @@ public class PlayerMovement : MonoBehaviour
         {
             HandleClimbing();
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+    {
+        Debug.Log("Space pressed! Grounded: " + _isGrounded);
+        if (_isGrounded)
+        {
+            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
+            Debug.Log("Forced jump executed!");
+        }
+    }
     }
 
     // 🔧 PERBAIKAN UTAMA: Deteksi grounded dari kaki karakter dengan SphereCast
     private void CheckGrounded()
-{
-    // Hitung posisi dasar collider (kaki karakter)
-    Vector3 raycastOrigin = transform.position + Vector3.down * (_boxCollider.size.y / 2);
+    {
+        // Hitung posisi dasar collider (kaki karakter)
+        Vector3 raycastOrigin = transform.position + Vector3.down * (_boxCollider.size.y / 2);
 
-    // 🔧 PERBAIKAN: Gunakan Raycast alih-alih SphereCast
-    _isGrounded = Physics.Raycast(
-        raycastOrigin,
-        Vector3.down,
-        0.2f // Jarak raycast lebih panjang
-    );
+        // 🔧 PERBAIKAN: Gunakan Raycast alih-alih SphereCast
+        // 🔥🔥🔥 PERUBAHAN UTAMA: TAMBAHKAN out _ DAN Physics.DefaultRaycastLayers
+        _isGrounded = Physics.Raycast(
+            raycastOrigin,
+            Vector3.down,
+            out _, // TAMBAHKAN OUT PARAMETER
+            0.4f, // PERBESAR JARAK RAYCAST
+            Physics.DefaultRaycastLayers // PASTIKAN MENDITEKSI SEMUA LAYER DEFAULT
+        );
 
-    // Debug visual (wajib aktif untuk verifikasi)
-    Debug.DrawRay(raycastOrigin, Vector3.down * 0.2f, _isGrounded ? Color.green : Color.red);
-}
+        // Debug visual (wajib aktif untuk verifikasi)
+        Debug.DrawRay(raycastOrigin, Vector3.down * 0.4f, _isGrounded ? Color.green : Color.red);
+    }
 
     private void HandleMovement()
     {
